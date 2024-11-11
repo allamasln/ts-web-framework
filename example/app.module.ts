@@ -1,6 +1,11 @@
-import { Application } from '../src/Application/Application.decorator'
+import { Module } from '../src/Module/Module.decorators'
+import { SomeService } from './app.service'
 
-@Application({
-	name: 'My Application',
+@Module({
+	declare: [SomeService],
 })
-export class AppMainModule {}
+export class AppModule {
+	constructor() {
+		console.log('AppModule initialized!')
+	}
+}

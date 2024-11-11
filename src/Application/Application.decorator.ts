@@ -1,40 +1,43 @@
-import 'reflect-metadata'
 import { ApplicationOptions } from './Application.types'
-
-/**
- * Singleton for app context and configuration.
- * Provides a decorator to initialize with the given options.
- */
+import { Constructor, Dictionary } from '@/common/types'
 
 export class ApplicationContext {
-	public readonly appClass?: { new (...args: any[]): {} }
-	public readonly options?: ApplicationOptions
+	private appClass?: Constructor
+	private options?: ApplicationOptions
+	public readonly globalDependencyContainer: Dictionary = {}
 
-	constructor(
-		appClass: { new (...args: any[]): {} },
-		options: ApplicationOptions
-	) {
-		this.appClass = appClass
-		this.options = options
+	initialize(appClass: Constructor, options: ApplicationOptions) {
+		if (!this._isInitialized()) {
+			this.appClass = appClass
+			this.options = options
+			console.log('[ApplicationContext]: Initialized successfully.')
+		} else {
+			console.log(
+				'[ApplicationContext]: Already initialized, skipping setup.'
+			)
+		}
+	}
+
+	_isInitialized(): boolean {
+		return !!this.appClass
 	}
 }
 
+// Singleton instance of the application context
 const _applicationContext: ApplicationContext =
-	{} as ApplicationContext
+	new ApplicationContext()
 
-export function getApplicationContext() {
+export function getApplicationContext(): ApplicationContext {
 	return _applicationContext
 }
 
-export function Application<T extends { new (...args: any[]): {} }>(
+export function Application<T extends Constructor>(
 	options: ApplicationOptions
 ) {
 	return function (constructor: T) {
-		if (!_applicationContext.appClass) {
-			Object.assign(_applicationContext, {
-				appClass: constructor,
-				options,
-			})
-		}
+		console.log(
+			'[Application]: Attempting to initialize application context...'
+		)
+		_applicationContext.initialize(constructor, options)
 	}
 }
