@@ -1,11 +1,11 @@
 {
 	"compilerOptions": {
-		"target": "ES6",
+		"target": "ES2021",
 		"module": "CommonJS",
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["src/*"],
-			"lib": ["src/index.ts"]
+			"lib": ["src/index"]
 		},
 		"moduleResolution": "Node",
 		"outDir": "dist",
@@ -17,6 +17,6 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true
 	},
-	"include": ["src/**/*", "src/example/**/*"],
+	"include": ["src/**/*"],
 	"exclude": ["node_modules", "dist"]
 }

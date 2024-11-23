@@ -1,3 +1,5 @@
+import 'reflect-metadata'
+
 export { Bootstraper } from '@/Application/Application.bootstraper'
 
 export { Application } from '@/Application/Application.decorator'

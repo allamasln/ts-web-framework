@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 import { Constructor, Dictionary } from '@/common/types'
 import { dependencyContainer } from './Injectable.container'
 

@@ -1,11 +1,10 @@
-import 'reflect-metadata'
 import {
 	addModuleContext,
 	getApplicationContext,
 } from '@/Application/Application.decorator'
 import { resolve } from '@/Injectable/Injectable.resolver'
+import { Constructor, Dictionary } from '@/common/types'
 import { ModuleConfiguration } from './Module.types'
-import { Dictionary, Constructor } from '@/common/types'
 
 // Context for managing module-specific dependencies.
 export class ModuleContext {
