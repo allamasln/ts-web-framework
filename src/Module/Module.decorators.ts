@@ -1,5 +1,8 @@
 import 'reflect-metadata'
-import { getApplicationContext } from '@/Application/Application.decorator'
+import {
+	addModuleContext,
+	getApplicationContext,
+} from '@/Application/Application.decorator'
 import { resolve } from '@/Injectable/Injectable.resolver'
 import { ModuleConfiguration } from './Module.types'
 import { Dictionary, Constructor } from '@/common/types'
@@ -27,6 +30,14 @@ export class ModuleContext {
 				getApplicationContext().globalDependencyContainer
 			)
 		})
+
+		this.options?.controllers?.forEach((dependency) => {
+			resolve(
+				dependency,
+				this.moduleDependencyContainer,
+				getApplicationContext().globalDependencyContainer
+			)
+		})
 	}
 }
 
@@ -36,5 +47,8 @@ export function Module<T extends Constructor>(
 	return function (constructor: T) {
 		let moduleContext = new ModuleContext(constructor, options)
 		moduleContext.init()
+		addModuleContext(moduleContext)
+
+		console.log(`[@Module]: Loaded ${constructor.name}`)
 	}
 }

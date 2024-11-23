@@ -6,10 +6,10 @@ import {
 } from './Application.decorator'
 
 export class Bootstraper {
-	private _app: ApplicationContext
+	private app: ApplicationContext
 
 	constructor() {
-		this._app = getApplicationContext()
+		this.app = getApplicationContext()
 	}
 
 	bootstrap(app: Constructor) {
