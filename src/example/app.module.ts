@@ -6,6 +6,4 @@ import { SomeService } from './app.service'
 	declare: [SomeService],
 	controllers: [SomeController],
 })
-export class AppModule {
-	constructor() {}
-}
+export class AppModule {}

@@ -1,6 +1,9 @@
-import { ModuleContext } from '@/Module/Module.decorators'
+import { ApplicationConfigurationService } from '@/Configuration/Configuration.service'
 import { ApplicationOptions } from './Application.types'
-import { Constructor, Dictionary } from '@/common/types'
+import { Constructor, Dictionary } from '../common/types'
+import { resolve } from '@/Injectable/Injectable.resolver'
+import { AbstractAPI } from '@/Infrastructure/API/API.abstract'
+import { ModuleContext } from '@/Module/Module.decorators'
 
 export class ApplicationContext {
 	private appClass?: Constructor
@@ -9,19 +12,39 @@ export class ApplicationContext {
 	public readonly globalDependencyContainer: Dictionary = {}
 
 	initialize(appClass: Constructor, options: ApplicationOptions) {
-		if (!this._isInitialized()) {
-			this.appClass = appClass
-			this.options = options
-			console.log('[ApplicationContext]: Initialized successfully.')
-		} else {
+		if (this._isInitialized()) {
 			console.log(
 				'[ApplicationContext]: Already initialized, skipping setup.'
 			)
+			return
 		}
+
+		this.appClass = appClass
+		this.options = options
+
+		this._resolveGlobalServices()
+	}
+
+	getOptions() {
+		return this.options
 	}
 
 	_isInitialized(): boolean {
 		return !!this.appClass
+	}
+
+	mount(api: AbstractAPI) {
+		this.modules.forEach((module) => {
+			module.mountControllers(api)
+		})
+	}
+
+	private _resolveGlobalServices() {
+		resolve(
+			ApplicationConfigurationService,
+			this.globalDependencyContainer
+		)
+		console.log('[ApplicationContext]: Global services resolved.')
 	}
 
 	addModule(module: ModuleContext) {
@@ -46,6 +69,6 @@ export function Application<T extends Constructor>(
 ) {
 	return function (constructor: T) {
 		_applicationContext.initialize(constructor, options)
-		//console.log({ _applicationContext })
+		console.log('[ApplicationContext]: Initialized successfully.')
 	}
 }

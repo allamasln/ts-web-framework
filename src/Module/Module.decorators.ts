@@ -2,6 +2,9 @@ import {
 	addModuleContext,
 	getApplicationContext,
 } from '@/Application/Application.decorator'
+import { getEndpoint } from '@/Controller/Controller.decorator'
+import { AbstractController } from '@/Controller/Controller.definition'
+import { AbstractAPI } from '@/Infrastructure/API/API.abstract'
 import { resolve } from '@/Injectable/Injectable.resolver'
 import { Constructor, Dictionary } from '@/common/types'
 import { ModuleConfiguration } from './Module.types'
@@ -36,6 +39,20 @@ export class ModuleContext {
 				this.moduleDependencyContainer,
 				getApplicationContext().globalDependencyContainer
 			)
+		})
+	}
+
+	mountControllers(api: AbstractAPI) {
+		this.options!.controllers.forEach((controllerClass) => {
+			const controllerInstance = this.moduleDependencyContainer[
+				controllerClass.name
+			] as AbstractController
+
+			controllerInstance.setHttpEndpoints(
+				getEndpoint(controllerClass.name)
+			)
+
+			api.mount(controllerInstance, this.moduleDependencyContainer)
 		})
 	}
 }
