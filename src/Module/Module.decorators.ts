@@ -1,6 +1,6 @@
 import 'reflect-metadata'
-import { getApplicationContext } from '../Application/Application.decorator'
-import { resolve } from '../Injectable/Injectable.resolver'
+import { getApplicationContext } from '@/Application/Application.decorator'
+import { resolve } from '@/Injectable/Injectable.resolver'
 import { ModuleConfiguration } from './Module.types'
 import { Dictionary, Constructor } from '@/common/types'
 

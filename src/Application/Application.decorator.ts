@@ -35,9 +35,7 @@ export function Application<T extends Constructor>(
 	options: ApplicationOptions
 ) {
 	return function (constructor: T) {
-		console.log(
-			'[Application]: Attempting to initialize application context...'
-		)
 		_applicationContext.initialize(constructor, options)
+		//console.log({ _applicationContext })
 	}
 }

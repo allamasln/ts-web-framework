@@ -9,14 +9,11 @@ export class Bootstraper {
 	private _app: ApplicationContext
 
 	constructor() {
-		console.log('[Bootstraper]: Initializing Bootstraper...')
-
 		this._app = getApplicationContext()
 	}
 
 	bootstrap(app: Constructor) {
 		console.log('[Bootstraper]: Bootstrapping application...')
-		console.log('[Bootstraper]: Application context:', this._app)
 
 		resolve(app, getApplicationContext().globalDependencyContainer)
 

@@ -4,7 +4,8 @@
 		"module": "CommonJS",
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["src/*"]
+			"@/*": ["src/*"],
+			"lib": ["src/index.ts"]
 		},
 		"moduleResolution": "Node",
 		"outDir": "dist",
@@ -13,10 +14,9 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"types": ["vitest/globals"],
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true
 	},
-	"include": ["src/**/*", "example/**/*"],
+	"include": ["src/**/*", "src/example/**/*"],
 	"exclude": ["node_modules", "dist"]
 }

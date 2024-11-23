@@ -1,4 +1,4 @@
-import { Application } from '../src/Application/Application.decorator'
+import { Application } from 'lib'
 import { AppModule } from './app.module'
 
 @Application({
@@ -6,7 +6,5 @@ import { AppModule } from './app.module'
 	declare: [AppModule],
 })
 export class App {
-	constructor() {
-		console.log('App initialized!')
-	}
+	constructor() {}
 }

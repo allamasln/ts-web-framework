@@ -9,10 +9,6 @@ export function resolve(
 ) {
 	if (!dependentClass) return
 
-	console.log(
-		`[resolve]: Resolving dependencies for ${dependentClass.name}`
-	)
-
 	const dependencies: Constructor[] =
 		Reflect.getMetadata('design:paramtypes', dependentClass) || []
 
@@ -29,10 +25,6 @@ export function resolve(
 			(parentContext && parentContext[dependencyClass.name])
 
 		if (!isResolved) {
-			console.log(
-				`[resolve]: Resolving dependency ${dependencyClass.name} for ${dependentClass.name}`
-			)
-
 			const dependencyInstance = dependencyContainer.get(
 				dependencyClass.name
 			)
@@ -49,8 +41,6 @@ export function resolve(
 
 	// Instantiate the class and inject dependencies if not already resolved.
 	if (!context[dependentClass.name]) {
-		console.log(`[resolve]: Instantiating ${dependentClass.name}`)
-
 		// Get dependency from current or parent context.
 		const getDependencyInstance = (dependencyClass: Constructor) =>
 			context[dependencyClass.name] ||

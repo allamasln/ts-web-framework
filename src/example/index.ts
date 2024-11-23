@@ -1,4 +1,4 @@
-import { Bootstraper } from '../src/Application/Application.bootstraper'
+import { Bootstraper } from 'lib'
 import { App } from './app'
 
 const bootstraper = new Bootstraper()

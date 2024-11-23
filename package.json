@@ -8,7 +8,7 @@
 	"main": "index.ts",
 	"private": true,
 	"scripts": {
-		"dev": "tsx watch --clear-screen=false example",
+		"dev": "tsx watch --clear-screen=false src/example",
 		"build": "tsup",
 		"start": "node dist/index.js"
 	},
