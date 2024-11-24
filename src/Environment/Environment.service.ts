@@ -1,12 +1,14 @@
-import { Subject } from 'rxjs'
 import { ApplicationEnvironment } from '@/Application/Application.types'
 import { Injectable } from '@/Injectable/Injectable.decorator'
+import { OnInit, OnShutdown } from '@/Injectable/Injectable.types'
+import { Subject } from 'rxjs'
 
 @Injectable
-export class ApplicationEnvironmentService {
+export class ApplicationEnvironmentService
+	implements OnInit, OnShutdown
+{
 	private declare environment: ApplicationEnvironment
 	private $subject = new Subject<ApplicationEnvironment>()
-	constructor() {}
 
 	onInit(): void {}
 

@@ -1,15 +1,18 @@
-import { Subject } from 'rxjs'
 import { ApplicationConfiguration } from '@/Application/Application.types'
 import { Injectable } from '@/Injectable/Injectable.decorator'
+import { OnInit, OnShutdown } from '@/Injectable/Injectable.types'
+import { Subject } from 'rxjs'
 
 @Injectable
-export class ApplicationConfigurationService {
-	private declare _configuration: ApplicationConfiguration
+export class ApplicationConfigurationService
+	implements OnInit, OnShutdown
+{
+	private declare configuration: ApplicationConfiguration
 	$subject = new Subject<ApplicationConfiguration>()
 	constructor() {}
 
 	onInit(): void {
-		this.$subject.next(this._configuration)
+		this.$subject.next(this.configuration)
 	}
 
 	onShutdown(): void {
@@ -17,12 +20,12 @@ export class ApplicationConfigurationService {
 	}
 
 	set(configuration: ApplicationConfiguration) {
-		this._configuration = configuration
-		this.$subject.next(this._configuration)
+		this.configuration = configuration
+		this.$subject.next(this.configuration)
 	}
 
 	get(): ApplicationConfiguration | undefined {
-		return this._configuration
+		return this.configuration
 	}
 
 	$() {

@@ -2,9 +2,9 @@ import { AbstractController } from '@/Controller/Controller.definition'
 import { Dictionary } from '@/common/types'
 import express, { Express, Request, Response } from 'express'
 import { Server } from 'http'
+import path from 'path'
 import { AbstractAPI } from './API.abstract'
 import { httpMethod } from './API.types'
-import path from 'path'
 
 export class ExpressAPI extends AbstractAPI {
 	declare app: Express
@@ -44,7 +44,17 @@ export class ExpressAPI extends AbstractAPI {
 
 	listen() {
 		this.server = this.app.listen(this.port, () => {
-			console.info(`[SERV] listening on port ${this.port}`)
+			console.info(`[SERV]: Listening on port ${this.port}`)
+		})
+	}
+
+	async shutdown(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			this.server.close((error) => {
+				if (error) return reject(error)
+
+				resolve()
+			})
 		})
 	}
 }

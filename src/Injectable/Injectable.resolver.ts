@@ -11,7 +11,7 @@ export function resolve(
 	const dependencies: Constructor[] =
 		Reflect.getMetadata('design:paramtypes', dependentClass) || []
 
-	console.log(`[resolve]`, dependentClass, { dependencies })
+	console.log(`[resolve]:`, dependentClass, { dependencies })
 
 	// Resolve each dependency recursively
 	dependencies.forEach((dependencyClass) => {

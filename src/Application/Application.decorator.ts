@@ -1,10 +1,11 @@
 import { ApplicationConfigurationService } from '@/Configuration/Configuration.service'
-import { ApplicationOptions } from './Application.types'
-import { Constructor, Dictionary } from '../common/types'
-import { resolve } from '@/Injectable/Injectable.resolver'
-import { AbstractAPI } from '@/Infrastructure/API/API.abstract'
-import { ModuleContext } from '@/Module/Module.decorators'
 import { ApplicationEnvironmentService } from '@/Environment/Environment.service'
+import { AbstractAPI } from '@/Infrastructure/API/API.abstract'
+import { resolve } from '@/Injectable/Injectable.resolver'
+import { ApplicationLoggerService } from '@/Logger/Logger.service'
+import { ModuleContext } from '@/Module/Module.decorators'
+import { Constructor, Dictionary } from '../common/types'
+import { ApplicationOptions } from './Application.types'
 
 export class ApplicationContext {
 	private appClass?: Constructor
@@ -50,11 +51,32 @@ export class ApplicationContext {
 			ApplicationEnvironmentService,
 			this.globalDependencyContainer
 		)
+
+		resolve(ApplicationLoggerService, this.globalDependencyContainer)
+
 		console.log('[ApplicationContext]: Global services resolved.')
 	}
 
 	addModule(module: ModuleContext) {
 		this.modules.push(module)
+	}
+
+	shutdown() {
+		this.modules.forEach((module) => module.onShutdown())
+
+		for (let dependency in this.globalDependencyContainer) {
+			if (this.globalDependencyContainer[dependency].onShutdown)
+				this.globalDependencyContainer[dependency].onShutdown()
+		}
+	}
+
+	init() {
+		this.modules.forEach((module) => module.onInit())
+
+		for (let dependency in this.globalDependencyContainer) {
+			if (this.globalDependencyContainer[dependency].onInit)
+				this.globalDependencyContainer[dependency].onInit()
+		}
 	}
 }
 

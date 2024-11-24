@@ -19,7 +19,10 @@ export {
 	ApplicationEnvironment,
 } from '@/Application/Application.types'
 
+export { OnInit, OnShutdown } from '@/Injectable/Injectable.types'
+
 export { ApplicationEnvironmentService } from '@/Environment/Environment.service'
+export { ApplicationLoggerService } from '@/Logger/Logger.service'
 
 export {
 	httpMethod,

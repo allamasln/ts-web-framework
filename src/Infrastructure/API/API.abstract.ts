@@ -7,6 +7,7 @@ interface API {
 		entityContainer: Dictionary
 	): void
 	listen(): void
+	shutdown(): Promise<void>
 }
 
 export abstract class AbstractAPI implements API {
@@ -23,4 +24,5 @@ export abstract class AbstractAPI implements API {
 	): void
 
 	abstract listen(): void
+	abstract shutdown(): Promise<void>
 }

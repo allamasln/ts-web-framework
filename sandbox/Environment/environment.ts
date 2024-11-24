@@ -5,4 +5,9 @@ export const environment: ApplicationEnvironment = {
 		port: 3001,
 		basePath: '/api',
 	},
+	logs: {
+		name: 'Some Service',
+		environment: 'dev',
+		send: true,
+	},
 }

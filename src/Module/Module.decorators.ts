@@ -55,6 +55,19 @@ export class ModuleContext {
 			api.mount(controllerInstance, this.moduleDependencyContainer)
 		})
 	}
+
+	onShutdown() {
+		for (let dependency in this.moduleDependencyContainer) {
+			if (this.moduleDependencyContainer[dependency].onShutdown)
+				this.moduleDependencyContainer[dependency].onShutdown()
+		}
+	}
+	onInit() {
+		for (let dependency in this.moduleDependencyContainer) {
+			if (this.moduleDependencyContainer[dependency].onInit)
+				this.moduleDependencyContainer[dependency].onInit()
+		}
+	}
 }
 
 export function Module<T extends Constructor>(

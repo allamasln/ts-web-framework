@@ -2,6 +2,7 @@ import {
 	APIEnvironment,
 	APIOptions,
 } from '@/Infrastructure/API/API.types'
+import { LoggerEnvironment } from '@/Logger/Logger.types'
 
 export type ApplicationConfiguration = {
 	api?: APIOptions
@@ -9,6 +10,7 @@ export type ApplicationConfiguration = {
 
 export type ApplicationEnvironment = {
 	api: APIEnvironment
+	logs: LoggerEnvironment
 }
 
 export type ApplicationOptions = {

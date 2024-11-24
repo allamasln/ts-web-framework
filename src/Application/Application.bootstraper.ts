@@ -1,6 +1,7 @@
 import { ConfigurationBootstraper } from '@/Configuration/Configuration.bootstraper'
 import { EnvironmentBootstraper } from '@/Environment/Environment.bootstraper'
 import { ApplicationEnvironmentService } from '@/Environment/Environment.service'
+import { AbstractAPI } from '@/Infrastructure/API/API.abstract'
 import { APIFactory } from '@/Infrastructure/API/API.factory'
 import { resolve } from '@/Injectable/Injectable.resolver'
 import { Constructor } from '@/common/types'
@@ -32,6 +33,10 @@ export class Bootstraper {
 
 		const api = this.mountAPI(environmentService)
 		api.listen()
+
+		this.app.init()
+
+		this.setupShutdown(api)
 	}
 
 	private setupConfiguration(): void {
@@ -68,7 +73,7 @@ export class Bootstraper {
 
 	private mountAPI(
 		environmentService: ApplicationEnvironmentService
-	): ReturnType<typeof APIFactory.create> {
+	) {
 		console.info('[Bootstraper]: Setting up API...')
 
 		const apiConfig = this.app.getOptions()?.configuration.api!
@@ -79,5 +84,22 @@ export class Bootstraper {
 		this.app.mount(api)
 
 		return api
+	}
+
+	private setupShutdown(api: AbstractAPI) {
+		process.on('SIGTERM', async () => {
+			try {
+				console.log('[Bootstraper]: Shutting down...')
+
+				await api.shutdown()
+
+				this.app.shutdown()
+			} catch (error) {
+				console.error('[Bootstraper]: Error during shutdown:', error)
+			} finally {
+				console.log('[Bootstraper]: Graceful shutdown complete, bye.')
+				process.exit(0)
+			}
+		})
 	}
 }
