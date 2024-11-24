@@ -16,49 +16,68 @@ export class Bootstraper {
 		this.app = getApplicationContext()
 	}
 
-	bootstrap(app: Constructor) {
-		console.log('[Bootstraper]: Bootstrapping application...')
+	bootstrap(rootModule: Constructor) {
+		console.info('[Bootstraper]: Starting bootstrap process...')
 
-		resolve(app, getApplicationContext().globalDependencyContainer)
+		resolve(rootModule, this.app.globalDependencyContainer)
 
-		const confBootstraper = new ConfigurationBootstraper(
-			this.app.getOptions()!.configuration,
+		this.setupConfiguration()
+		this.setupEnvironment()
+
+		const environmentService = this.loadEnvironmentService()
+
+		console.info(
+			'[Bootstraper]: Application initialized successfully.'
+		)
+
+		const api = this.mountAPI(environmentService)
+		api.listen()
+	}
+
+	private setupConfiguration(): void {
+		console.info('[Bootstraper]: Setting up configuration...')
+
+		const configurationBootstraper = new ConfigurationBootstraper(
+			this.app.getOptions()?.configuration!,
 			this.app.globalDependencyContainer[
 				'ApplicationConfigurationService'
 			]
 		)
 
-		console.log('[Bootstraper]: Initializing configuration...')
-		confBootstraper.bootstrap()
+		configurationBootstraper.bootstrap()
+	}
 
-		const envBootstraper = new EnvironmentBootstraper(
-			this.app.getOptions()!.environment,
+	private setupEnvironment(): void {
+		console.info('[Bootstraper]: Setting up environment...')
+
+		const environmentBootstraper = new EnvironmentBootstraper(
+			this.app.getOptions()?.environment!,
 			this.app.globalDependencyContainer[
 				'ApplicationEnvironmentService'
 			]
 		)
 
-		console.log('[Bootstraper]: Initializing enviroment...')
-		envBootstraper.bootstrap()
+		environmentBootstraper.bootstrap()
+	}
 
-		const conf = (
-			this.app.globalDependencyContainer[
-				'ApplicationEnvironmentService'
-			] as ApplicationEnvironmentService
-		).get()!
+	private loadEnvironmentService(): ApplicationEnvironmentService {
+		return this.app.globalDependencyContainer[
+			'ApplicationEnvironmentService'
+		] as ApplicationEnvironmentService
+	}
 
-		console.log(
-			'[Bootstraper]: Application bootstrapped successfully'
-		)
+	private mountAPI(
+		environmentService: ApplicationEnvironmentService
+	): ReturnType<typeof APIFactory.create> {
+		console.info('[Bootstraper]: Setting up API...')
 
-		let api = APIFactory.create(
-			this.app.getOptions()?.configuration.api!,
-			conf.api.port,
-			conf.api.basePath
-		)
+		const apiConfig = this.app.getOptions()?.configuration.api!
+		const { port, basePath } = environmentService.get()?.api || {}
+
+		const api = APIFactory.create(apiConfig, port!, basePath!)
 
 		this.app.mount(api)
 
-		api.listen()
+		return api
 	}
 }
