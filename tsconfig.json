@@ -17,6 +17,6 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true
 	},
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "sandbox"],
 	"exclude": ["node_modules", "dist"]
 }
