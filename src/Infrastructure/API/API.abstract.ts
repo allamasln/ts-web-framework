@@ -10,10 +10,12 @@ interface API {
 }
 
 export abstract class AbstractAPI implements API {
-	port: number
+	protected port: number
+	protected modulePath?: string
 
-	constructor(port: number) {
+	constructor(port: number, modulePath?: string) {
 		this.port = port
+		this.modulePath = modulePath
 	}
 	abstract mount(
 		controller: AbstractController,

@@ -2,6 +2,14 @@ import { HttpEndpoint } from './Controller.types'
 
 export class AbstractController {
 	private httpEndpoints: HttpEndpoint[] = []
+	private declare base: string
+
+	setBase(base: string): void {
+		this.base = base
+	}
+	getBase(): string {
+		return this.base
+	}
 
 	setHttpEndpoints(httpEndpoints?: HttpEndpoint[]) {
 		if (httpEndpoints) {

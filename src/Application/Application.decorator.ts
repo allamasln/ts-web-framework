@@ -4,6 +4,7 @@ import { Constructor, Dictionary } from '../common/types'
 import { resolve } from '@/Injectable/Injectable.resolver'
 import { AbstractAPI } from '@/Infrastructure/API/API.abstract'
 import { ModuleContext } from '@/Module/Module.decorators'
+import { ApplicationEnvironmentService } from '@/Environment/Environment.service'
 
 export class ApplicationContext {
 	private appClass?: Constructor
@@ -42,6 +43,11 @@ export class ApplicationContext {
 	private _resolveGlobalServices() {
 		resolve(
 			ApplicationConfigurationService,
+			this.globalDependencyContainer
+		)
+
+		resolve(
+			ApplicationEnvironmentService,
 			this.globalDependencyContainer
 		)
 		console.log('[ApplicationContext]: Global services resolved.')

@@ -1,11 +1,16 @@
-import { APIOptions } from './API.types'
+import { AbstractAPI } from './API.abstract'
+import { APIEnvironment, APIOptions } from './API.types'
 import { ExpressAPI } from './ExpressApi'
 
 export class APIFactory {
-	static create(apiFramework: APIOptions): any {
+	static create(
+		apiFramework: APIOptions,
+		port: number,
+		modulePath?: string
+	): any {
 		switch (apiFramework) {
 			case APIOptions.express:
-				return new ExpressAPI(3001)
+				return new ExpressAPI(port, modulePath)
 
 			default:
 				throw new Error('Unsupported API Framework')

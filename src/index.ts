@@ -10,11 +10,17 @@ export { Module } from '@/Module/Module.decorators'
 export {
 	Controller,
 	ControllerHttpEndpoint,
-} from './Controller/Controller.decorator'
+} from '@/Controller/Controller.decorator'
 
-export { ApplicationConfiguration } from '@/Application/Application.types'
+export { AbstractController } from '@/Controller/Controller.definition'
 
-export { AbstractController } from './Controller/Controller.definition'
+export {
+	ApplicationConfiguration,
+	ApplicationEnvironment,
+} from '@/Application/Application.types'
+
+export { ApplicationEnvironmentService } from '@/Environment/Environment.service'
+
 export {
 	httpMethod,
 	APIOptions,

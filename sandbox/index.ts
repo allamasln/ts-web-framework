@@ -1,3 +1,5 @@
+import 'dotenv/config'
+
 import { Bootstraper } from 'lib'
 import { App } from './app'
 

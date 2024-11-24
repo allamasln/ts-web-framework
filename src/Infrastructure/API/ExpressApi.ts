@@ -4,12 +4,13 @@ import express, { Express, Request, Response } from 'express'
 import { Server } from 'http'
 import { AbstractAPI } from './API.abstract'
 import { httpMethod } from './API.types'
+import path from 'path'
 
 export class ExpressAPI extends AbstractAPI {
 	declare app: Express
 	declare server: Server
-	constructor(port: number) {
-		super(port)
+	constructor(port: number, modulePath: string = '') {
+		super(port, modulePath)
 		this.app = express()
 	}
 
@@ -17,29 +18,33 @@ export class ExpressAPI extends AbstractAPI {
 		controller: AbstractController,
 		entityContainer: Dictionary
 	): void {
-		controller.iterateEndpoint(
-			({ options, function: fn, controllerName }) => {
-				const { method, path } = options
+		controller.iterateEndpoint((endpoint) => {
+			const controllerInstance = entityContainer[
+				endpoint.controllerName
+			] as AbstractController & any
 
-				const controllerInstance = entityContainer[
-					controllerName
-				] as AbstractController & any
+			let finalPath = path
+				.join(
+					this.modulePath || '',
+					controllerInstance.getBase() || '',
+					endpoint.options.path
+				)
+				.replaceAll('\\', '/')
 
-				const routeHandler = (req: Request, res: Response) => {
-					controllerInstance[fn.name](req, res)
-				}
-
-				if (method === httpMethod.GET)
-					this.app.get(path, routeHandler)
-
-				console.info(`[API]: GET ${path} Routed`)
+			const routeHandler = (req: Request, res: Response) => {
+				controllerInstance[endpoint.function.name](req, res)
 			}
-		)
+
+			if (endpoint.options.method === httpMethod.GET)
+				this.app.get(finalPath, routeHandler)
+
+			console.info(`[API]: GET ${finalPath} Routed`)
+		})
 	}
 
 	listen() {
 		this.server = this.app.listen(this.port, () => {
-			console.info(`[SERVER] listening on port ${this.port}`)
+			console.info(`[SERV] listening on port ${this.port}`)
 		})
 	}
 }

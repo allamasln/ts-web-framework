@@ -15,3 +15,8 @@ export type ControllerHttpOptions = {
 	path: string
 	method: httpMethod
 }
+
+export type APIEnvironment = {
+	port: number
+	basePath: string
+}

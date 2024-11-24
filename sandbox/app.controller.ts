@@ -13,6 +13,7 @@ import { SomeService } from './app.service'
 export class SomeController extends AbstractController {
 	constructor(private someService: SomeService) {
 		super()
+		this.setBase('some')
 	}
 
 	@ControllerHttpEndpoint({
