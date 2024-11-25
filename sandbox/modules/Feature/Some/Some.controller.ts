@@ -7,18 +7,18 @@ import {
 	Response,
 } from 'lib'
 
-import { SomeService } from './app.service'
+import { SomeService } from './Some.service'
 
 @Controller
 export class SomeController extends AbstractController {
 	constructor(private someService: SomeService) {
 		super()
-		this.setBase('some')
+		this.setBase('core')
 	}
 
 	@ControllerHttpEndpoint({
 		method: httpMethod.GET,
-		path: '/healthcheck',
+		path: '/some',
 	})
 	async healthCheck(req: Request, res: Response) {
 		res.send(this.someService.helthCheck())

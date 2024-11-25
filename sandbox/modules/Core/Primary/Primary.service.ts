@@ -1,14 +1,14 @@
 import {
 	ApplicationEnvironmentService,
+	ApplicationLoggerService,
 	Injectable,
 	OnInit,
 	OnShutdown,
 } from 'lib'
 import { Subject } from 'rxjs'
-import { ApplicationLoggerService } from '../src/Logger/Logger.service'
 
 @Injectable
-export class SomeService implements OnInit, OnShutdown {
+export class PrimaryService implements OnInit, OnShutdown {
 	private $unsuscribeAll: Subject<void> = new Subject<void>()
 
 	constructor(
@@ -31,5 +31,6 @@ export class SomeService implements OnInit, OnShutdown {
 			this.environmentService.get()?.logs.environment
 
 		this.loggerService.log(`Environment: ${environment || 'unknown'}`)
+		this.loggerService.log(`Core/PrimaryService initialized`)
 	}
 }

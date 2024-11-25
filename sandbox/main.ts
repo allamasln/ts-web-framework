@@ -1,14 +1,15 @@
 import { Application } from 'lib'
 import { configuration } from './Configuration/configuration'
-import { AppModule } from './app.module'
+import { CoreModule } from './modules/Core/Core.module'
+import { FeatureModule } from './modules/Feature/Feature.module'
 import { environment } from './Environment/environment'
 
 @Application({
 	name: 'My Application',
-	declare: [AppModule],
+	declare: [CoreModule, FeatureModule],
 	configuration,
 	environment,
 })
-export class App {
+export class Main {
 	constructor() {}
 }

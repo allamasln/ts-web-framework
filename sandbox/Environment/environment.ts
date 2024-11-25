@@ -6,7 +6,7 @@ export const environment: ApplicationEnvironment = {
 		basePath: '/api',
 	},
 	logs: {
-		name: 'Some Service',
+		name: 'Sandbox',
 		environment: 'dev',
 		send: true,
 	},

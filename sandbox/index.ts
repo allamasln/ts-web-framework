@@ -1,7 +1,7 @@
 import 'dotenv/config'
 
 import { Bootstraper } from 'lib'
-import { App } from './app'
+import { Main } from './main'
 
 const bootstraper = new Bootstraper()
-bootstraper.bootstrap(App)
+bootstraper.bootstrap(Main)
